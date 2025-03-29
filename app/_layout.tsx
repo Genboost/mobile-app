@@ -1,17 +1,43 @@
 import { Stack } from "expo-router";
+import { HeaderTitle } from "@/components/HeaderTitle";
+import Entypo from '@expo/vector-icons/Entypo';
+import { useState } from 'react';
+import { View } from 'react-native';
+import { SearchOverlay } from "@/components/SearchOverlay";
 
 export default function RootLayout() {
-  return <Stack screenOptions={{
-    title: "Genboost",
-    headerStyle: {
-      backgroundColor: '#eaecf0',
-    },
-    headerTitleStyle: {
-      fontFamily: 'LinLibertine',
-      fontSize: 30,
-    },
-    contentStyle: {
-      backgroundColor: 'white'
-    }
-  }} />;
+  const title = "WIKIPEDYS";
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  
+  return (
+    <View style={{ flex: 1 }}>
+      <Stack screenOptions={{
+        title: title,
+        headerTitle: () => <HeaderTitle title={title} />,
+        headerStyle: {
+          backgroundColor: '#eaecf0',
+          height: 55
+        },
+        headerTitleStyle: {
+          fontFamily: 'LinLibertine',
+          fontSize: 30,
+        },
+        contentStyle: {
+          backgroundColor: 'white'
+        },
+        headerRight: () => (
+          <Entypo 
+            name="magnifying-glass" 
+            size={24} 
+            color="#54595d" 
+            style={{ marginRight: 15 }}
+            onPress={() => setIsSearchVisible(true)}
+          />
+        )
+      }} />
+      {isSearchVisible && (
+        <SearchOverlay onClose={() => setIsSearchVisible(false)} />
+      )}
+    </View>
+  );
 }

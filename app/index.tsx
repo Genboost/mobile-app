@@ -1,11 +1,6 @@
-import { View, StyleSheet, ScrollView, Alert, Text, Pressable } from "react-native";
-import { Paragraph } from "@/components/Paragraph";
-import { WikipediaSearch } from "@/components/WikipediaSearch";
+import { View, StyleSheet, ScrollView, Text, Pressable } from "react-native";
 import { useState } from "react"; 
-import { tools } from "@/domain/Tools";
-import { DysText } from "@/components/DysText";
 import { useFonts } from 'expo-font';
-import { Button } from "@/components/Button";
 import { Image } from "expo-image";
 import { useAssets } from "expo-asset";
 
@@ -15,67 +10,44 @@ interface WikipediaArticle {
 }
 
 export default function Index() {
-  const [tool, setTool] = useState<tools>(tools.DEFAULT);
-  const [selectedArticle, setSelectedArticle] = useState<WikipediaArticle | null>(null);
-  const [loaded] = useFonts({
-    'OpenDyslexic-Regular': require('../assets/fonts/OpenDyslexic-Regular.otf'),
-    'OpenDyslexic-Bold': require('../assets/fonts/OpenDyslexic-Bold.otf'),
+  useFonts({
     'LinLibertine': require('../assets/fonts/LinLibertine_R.ttf'),
+    'linLibertineBold': require('../assets/fonts/LinLibertine_RB.ttf'),
   });
   const [assets] = useAssets([
     require('../assets/images/icon_1.png'),
   ]);
   const [dysplay, setDysplay] = useState<boolean>(false);
-  const splitIntoParagraphs = (text: string) => {
-    return text.split('\n').filter(paragraph => paragraph.trim());
-  };
 
   return (
     <View style={styles.container}>
-      <WikipediaSearch onArticleSelect={(article) => {
-        setSelectedArticle(null);
-        setSelectedArticle(article);
-      }} />
-      {/*<View style={styles.buttonContainer}>
-        <Button title="Named Entity" onPress={() => setTool(tools.NAMED_ENTITY)}  />
-        <Button title="Default" onPress={() => setTool(tools.DEFAULT)} />
-      </View>*/}
-      <ScrollView style={styles.articleContainer}>
-        {selectedArticle ? (
-          <>
-            <View style={{display: dysplay ? 'flex' : 'none'}}>
-              <DysText style={styles.articleTitle}>{selectedArticle.title}</DysText>
-              {splitIntoParagraphs(selectedArticle.content).map((paragraph, index) => (
-                <View key={selectedArticle.title + index} style={styles.paragraphContainer}>
-                  <Paragraph tool={tool}>{paragraph}</Paragraph>
-                </View>
-              ))}
-            </View>
-            <View style={{display: dysplay ? 'none' : 'flex'}}>
-              <Text style={styles.articleTitle}>{selectedArticle.title}</Text>
-              {
-                selectedArticle?.content.split('\n').map((paragraph, index) => (
-                  <Text key={selectedArticle.title + index} style={styles.paragraphContainer}>{paragraph}</Text>
-                ))
-              }
-            </View>
-          </>
-        ) : (
-          dysplay ? (
-            <DysText style={styles.noArticleText}>Aucun article sélectionné</DysText>
-          ) : (
-            <Text style={styles.noArticleText}>Aucun article sélectionné</Text>
-          )
-        )}
+      <ScrollView style={styles.welcomeContainer}>
+        <View style={styles.welcomeContent}>
+          <Text style={styles.welcomeTitle}>Bienvenue sur Wikipedys</Text>
+          <Text style={styles.welcomeSubtitle}>L'encyclopédie libre adaptée pour la dyslexie</Text>
+
+          <View style={styles.infoBox}>
+            <Text style={styles.infoTitle}>À propos de Wikipedys</Text>
+            <Text style={styles.infoText}>
+              Wikipedys est une version adaptée de Wikipédia, spécialement conçue pour les personnes atteintes de dyslexie. 
+              Notre mission est de rendre le savoir accessible à tous, en utilisant des polices et des formats de texte 
+              optimisés pour la lecture.
+            </Text>
+          </View>
+
+          <View style={styles.featuresContainer}>
+            <Text style={styles.featuresTitle}>Fonctionnalités principales</Text>
+            <Text style={styles.featureItem}>• Police de caractères adaptée à la dyslexie</Text>
+            <Text style={styles.featureItem}>• Mise en page optimisée pour la lecture</Text>
+            <Text style={styles.featureItem}>• Contenu de Wikipédia en français</Text>
+            <Text style={styles.featureItem}>• Interface simple et intuitive</Text>
+          </View>
+        </View>
       </ScrollView>
+      
       <View style={styles.bottomBar}>
-        <Pressable
-          onPress={() => setDysplay(!dysplay)}
-        >
-          <Image  
-            source={assets?.[0]}
-            style={styles.icon}
-          />
+        <Pressable onPress={() => setDysplay(!dysplay)}>
+          <Image source={assets?.[0]} style={styles.icon} />
         </Pressable>
       </View>
     </View>
@@ -85,32 +57,75 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#ffffff',
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 16,
-  },
-  articleContainer: {
+  welcomeContainer: {
     flex: 1,
     padding: 16,
   },
-  articleTitle: {
-    fontSize: 24,
+  logoContainer: {
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  wikiLogo: {
+    fontSize: 48,
+    fontWeight: 'bold',
+    color: '#000000',
+    fontFamily: 'LinLibertine',
+  },
+  welcomeContent: {
+    alignItems: 'center',
+  },
+  welcomeTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  welcomeSubtitle: {
+    fontSize: 18,
+    color: '#666666',
+    marginBottom: 24,
+    textAlign: 'center',
+  },
+  searchContainer: {
+    width: '100%',
+    marginBottom: 32,
+  },
+  infoBox: {
+    backgroundColor: '#f8f9fa',
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 24,
+    width: '100%',
+  },
+  infoTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 12,
+  },
+  infoText: {
+    fontSize: 16,
+    lineHeight: 24,
+    color: '#333333',
+  },
+  featuresContainer: {
+    width: '100%',
+    padding: 16,
+    backgroundColor: '#ffffff',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+  },
+  featuresTitle: {
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 16,
   },
-  paragraphContainer: {
-    marginBottom: 16,
-  },
-  noArticleText: {
+  featureItem: {
     fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
-    marginTop: 20,
-  },
-  button: {
-    fontFamily: 'OpenDyslexic-Regular',
+    marginBottom: 8,
+    color: '#333333',
   },
   bottomBar: {
     flexDirection: 'row',
@@ -118,6 +133,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 2,
     borderTopColor: '#ccc',
     backgroundColor: '#eaecf0',
+    padding: 8,
   },
   icon: {
     width: 60,
