@@ -1,8 +1,9 @@
-import { Text, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
+import { DysText } from "./DysText";
 
 export const Rhese = ({ rhese, color }: { rhese: string, color: number }) => {
   const backgroundColor = color === 0 ? styles.color1 : styles.color2;
-  return <Text style={[backgroundColor]}>{rhese} </Text>;
+  return <DysText style={[backgroundColor]}>{rhese} </DysText>;
 };
 
 const styles = StyleSheet.create({

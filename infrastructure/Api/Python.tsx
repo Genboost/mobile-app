@@ -1,6 +1,6 @@
 import { Api } from "@/domain/Api";
 
-const url = 'http://127.0.0.1:5000';
+const url = 'https://nsgenboostapiserverdzy6vfrt-container-vibrant-newton.functions.fnc.fr-par.scw.cloud/';
 
 export const Python: Api = {
     getRhese: (text: string) => {

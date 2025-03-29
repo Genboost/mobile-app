@@ -1,9 +1,11 @@
-import { View, Button, Text, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { Paragraph } from "@/components/Paragraph";
 import { WikipediaSearch } from "@/components/WikipediaSearch";
 import { useState } from "react"; 
 import { tools } from "@/domain/Tools";
-
+import { DysText } from "@/components/DysText";
+import { useFonts } from 'expo-font';
+import { Button } from "@/components/Button";
 interface WikipediaArticle {
   title: string;
   content: string;
@@ -12,30 +14,36 @@ interface WikipediaArticle {
 export default function Index() {
   const [tool, setTool] = useState<tools>(tools.DEFAULT);
   const [selectedArticle, setSelectedArticle] = useState<WikipediaArticle | null>(null);
-
+  const [loaded, error] = useFonts({
+    'OpenDyslexic-Regular': require('../assets/fonts/OpenDyslexic-Regular.otf'),
+    'OpenDyslexic-Bold': require('../assets/fonts/OpenDyslexic-Bold.otf'),
+  });
   const splitIntoParagraphs = (text: string) => {
     return text.split('\n').filter(paragraph => paragraph.trim());
   };
 
   return (
     <View style={styles.container}>
-      <WikipediaSearch onArticleSelect={setSelectedArticle} />
-      <View style={styles.buttonContainer}>
-        <Button title="Named Entity" onPress={() => setTool(tools.NAMED_ENTITY)} />
+      <WikipediaSearch onArticleSelect={(article) => {
+        setSelectedArticle(null);
+        setSelectedArticle(article);
+      }} />
+      {/*<View style={styles.buttonContainer}>
+        <Button title="Named Entity" onPress={() => setTool(tools.NAMED_ENTITY)}  />
         <Button title="Default" onPress={() => setTool(tools.DEFAULT)} />
-      </View>
+      </View>*/}
       <ScrollView style={styles.articleContainer}>
         {selectedArticle ? (
           <>
-            <Text style={styles.articleTitle}>{selectedArticle.title}</Text>
+            <DysText style={styles.articleTitle}>{selectedArticle.title}</DysText>
             {splitIntoParagraphs(selectedArticle.content).map((paragraph, index) => (
-              <View key={index} style={styles.paragraphContainer}>
+              <View key={selectedArticle.title + index} style={styles.paragraphContainer}>
                 <Paragraph tool={tool}>{paragraph}</Paragraph>
               </View>
             ))}
           </>
         ) : (
-          <Text style={styles.noArticleText}>Aucun article sélectionné</Text>
+          <DysText style={styles.noArticleText}>Aucun article sélectionné</DysText>
         )}
       </ScrollView>
     </View>
@@ -68,5 +76,8 @@ const styles = StyleSheet.create({
     color: '#666',
     textAlign: 'center',
     marginTop: 20,
+  },
+  button: {
+    fontFamily: 'OpenDyslexic-Regular',
   },
 });

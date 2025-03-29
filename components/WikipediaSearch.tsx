@@ -1,5 +1,6 @@
 import { View, TextInput, FlatList, Text, StyleSheet, Pressable } from "react-native";
 import { useState } from "react";
+import { DysText } from "./DysText";
 
 interface WikipediaSearchResult {
   title: string;
@@ -73,10 +74,10 @@ export const WikipediaSearch = ({ onArticleSelect }: WikipediaSearchProps) => {
         fetchArticleContent(item.title);
       }}
     >
-      <Text style={styles.title}>{item.title}</Text>
-      <Text style={styles.snippet} numberOfLines={2}>
+      <DysText style={styles.title}>{item.title}</DysText>
+      <DysText style={styles.snippet} numberOfLines={2}>
         {item.snippet.replace(/<[^>]*>/g, '')}
-      </Text>
+      </DysText>
     </Pressable>
   );
 
@@ -97,7 +98,7 @@ export const WikipediaSearch = ({ onArticleSelect }: WikipediaSearchProps) => {
         />
       )}
       {isLoading && (
-        <Text style={styles.loadingText}>Chargement de l'article...</Text>
+        <DysText style={styles.loadingText}>Chargement de l'article...</DysText>
       )}
     </View>
   );

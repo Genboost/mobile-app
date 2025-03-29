@@ -10,19 +10,38 @@ export const Paragraph = ({ children, tool }: { children: React.ReactNode, tool:
     const [rhese, setRhese] = useState<Array<string>>([]);
     const [namedEntities, setNamedEntities] = useState<Array<NamedEntityType>>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [retryCount, setRetryCount] = useState(0);
   
     useEffect(() => {
-        setIsLoading(true);
-        if (tool === tools.NAMED_ENTITY) {
-            api.getNamedEntity((children || '').toString())
-                .then(setNamedEntities)
-                .finally(() => setIsLoading(false));
-        } else {
-            api.getRhese((children || '').toString())
-                .then(setRhese)
-                .finally(() => setIsLoading(false));
-        }
-    }, [tool]);
+        const fetchData = async () => {
+            setIsLoading(true);
+            try {
+                if (tool === tools.NAMED_ENTITY) {
+                    const result = await api.getNamedEntity((children || '').toString());
+                    if (result.length === 0 && retryCount < 3) {
+                        setRetryCount(prev => prev + 1);
+                        return;
+                    }
+                    setNamedEntities(result);
+                    setIsLoading(false);
+                } else {
+                    const result = await api.getRhese((children || '').toString());
+                    if (result.length === 0 && retryCount < 3) {
+                        setRetryCount(prev => prev + 1);
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                        fetchData();
+                        return;
+                    }
+                    setRhese(result);
+                    setIsLoading(false);
+                }
+            } catch (error) {
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [tool, retryCount]);
     
     if (isLoading) {
         return (
