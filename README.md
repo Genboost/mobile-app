@@ -48,3 +48,8 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+
+## TEXTS
+
+L'histoire de la Terre commence voici plus de 4,5 milliards d'années. Au centre de la Terre, un noyau métallique de fer et de nickel peut atteindre 5 500 degrés. Il est entouré d'un manteau de roches, plus ou moins fondues. En surface, l'écorce (ou croute) terrestre n'a que 5 à 70 km d'épaisseur, selon les endroits.
