@@ -31,5 +31,6 @@ const styles = StyleSheet.create({
 	text: {
 		lineHeight: 30,
 		fontFamily: 'OpenDyslexic-Regular',
+		borderRadius: 5
 	},
 });
