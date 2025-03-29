@@ -8,7 +8,7 @@ export const Rhese = ({ rhese, color }: { rhese: string, color: number }) => {
 
 const styles = StyleSheet.create({
   color1: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: 'white',
   },
   color2: {
     backgroundColor: '#e0e0e0',

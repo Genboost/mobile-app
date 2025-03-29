@@ -1,4 +1,4 @@
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, Alert, Text, Pressable } from "react-native";
 import { Paragraph } from "@/components/Paragraph";
 import { WikipediaSearch } from "@/components/WikipediaSearch";
 import { useState } from "react"; 
@@ -6,6 +6,9 @@ import { tools } from "@/domain/Tools";
 import { DysText } from "@/components/DysText";
 import { useFonts } from 'expo-font';
 import { Button } from "@/components/Button";
+import { Image } from "expo-image";
+import { useAssets } from "expo-asset";
+
 interface WikipediaArticle {
   title: string;
   content: string;
@@ -14,10 +17,15 @@ interface WikipediaArticle {
 export default function Index() {
   const [tool, setTool] = useState<tools>(tools.DEFAULT);
   const [selectedArticle, setSelectedArticle] = useState<WikipediaArticle | null>(null);
-  const [loaded, error] = useFonts({
+  const [loaded] = useFonts({
     'OpenDyslexic-Regular': require('../assets/fonts/OpenDyslexic-Regular.otf'),
     'OpenDyslexic-Bold': require('../assets/fonts/OpenDyslexic-Bold.otf'),
+    'LinLibertine': require('../assets/fonts/LinLibertine_R.ttf'),
   });
+  const [assets] = useAssets([
+    require('../assets/images/icon_1.png'),
+  ]);
+  const [dysplay, setDysplay] = useState<boolean>(false);
   const splitIntoParagraphs = (text: string) => {
     return text.split('\n').filter(paragraph => paragraph.trim());
   };
@@ -35,17 +43,41 @@ export default function Index() {
       <ScrollView style={styles.articleContainer}>
         {selectedArticle ? (
           <>
-            <DysText style={styles.articleTitle}>{selectedArticle.title}</DysText>
-            {splitIntoParagraphs(selectedArticle.content).map((paragraph, index) => (
-              <View key={selectedArticle.title + index} style={styles.paragraphContainer}>
-                <Paragraph tool={tool}>{paragraph}</Paragraph>
-              </View>
-            ))}
+            <View style={{display: dysplay ? 'flex' : 'none'}}>
+              <DysText style={styles.articleTitle}>{selectedArticle.title}</DysText>
+              {splitIntoParagraphs(selectedArticle.content).map((paragraph, index) => (
+                <View key={selectedArticle.title + index} style={styles.paragraphContainer}>
+                  <Paragraph tool={tool}>{paragraph}</Paragraph>
+                </View>
+              ))}
+            </View>
+            <View style={{display: dysplay ? 'none' : 'flex'}}>
+              <Text style={styles.articleTitle}>{selectedArticle.title}</Text>
+              {
+                selectedArticle?.content.split('\n').map((paragraph, index) => (
+                  <Text key={selectedArticle.title + index} style={styles.paragraphContainer}>{paragraph}</Text>
+                ))
+              }
+            </View>
           </>
         ) : (
-          <DysText style={styles.noArticleText}>Aucun article sélectionné</DysText>
+          dysplay ? (
+            <DysText style={styles.noArticleText}>Aucun article sélectionné</DysText>
+          ) : (
+            <Text style={styles.noArticleText}>Aucun article sélectionné</Text>
+          )
         )}
       </ScrollView>
+      <View style={styles.bottomBar}>
+        <Pressable
+          onPress={() => setDysplay(!dysplay)}
+        >
+          <Image  
+            source={assets?.[0]}
+            style={styles.icon}
+          />
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -53,7 +85,6 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -62,6 +93,7 @@ const styles = StyleSheet.create({
   },
   articleContainer: {
     flex: 1,
+    padding: 16,
   },
   articleTitle: {
     fontSize: 24,
@@ -79,5 +111,16 @@ const styles = StyleSheet.create({
   },
   button: {
     fontFamily: 'OpenDyslexic-Regular',
+  },
+  bottomBar: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    borderTopWidth: 2,
+    borderTopColor: '#ccc',
+    backgroundColor: '#eaecf0',
+  },
+  icon: {
+    width: 60,
+    height: 60,
   },
 });

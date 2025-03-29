@@ -4,7 +4,6 @@ const url = 'https://nsgenboostapiserverdzy6vfrt-container-vibrant-newton.functi
 
 export const Python: Api = {
     getRhese: (text: string) => {
-        console.log(text)
         return fetch(`${url}/api/get_rhese`, {
         method: 'POST',
         headers: {

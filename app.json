@@ -33,15 +33,33 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      ["expo-font",
-      {
-        "fonts": [
-          "./assets/fonts/OpenDyslexic-Regular.otf"
-        ]
-      }]
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/OpenDyslexic-Regular.otf"
+          ]
+        }
+      ],
+      [
+        "expo-asset",
+        {
+          "assets": [
+            "./assets/images/icon_1.png"
+          ]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "0ef21f09-0169-456a-8cdd-84b4a934e58f"
+      }
     }
   }
 }

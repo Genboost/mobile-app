@@ -39,7 +39,9 @@
     "react-native-screens": "~4.4.0",
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5",
-    "expo-speech": "~13.0.1"
+    "expo-speech": "~13.0.1",
+    "expo-image": "~2.0.7",
+    "expo-asset": "~11.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

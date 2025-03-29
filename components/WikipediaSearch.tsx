@@ -1,6 +1,6 @@
 import { View, TextInput, FlatList, Text, StyleSheet, Pressable } from "react-native";
-import { useState } from "react";
-import { DysText } from "./DysText";
+import { useState, useEffect } from "react";
+import { useDebounce } from "../hooks/useDebounce";
 
 interface WikipediaSearchResult {
   title: string;
@@ -20,6 +20,7 @@ export const WikipediaSearch = ({ onArticleSelect }: WikipediaSearchProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<WikipediaSearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
   const searchWikipedia = async (query: string) => {
     if (!query.trim()) {
@@ -62,8 +63,11 @@ export const WikipediaSearch = ({ onArticleSelect }: WikipediaSearchProps) => {
 
   const handleSearch = (text: string) => {
     setSearchQuery(text);
-    searchWikipedia(text);
   };
+
+  useEffect(() => {
+    searchWikipedia(debouncedSearchQuery);
+  }, [debouncedSearchQuery]);
 
   const renderSearchResult = ({ item }: { item: WikipediaSearchResult }) => (
     <Pressable 
@@ -74,10 +78,10 @@ export const WikipediaSearch = ({ onArticleSelect }: WikipediaSearchProps) => {
         fetchArticleContent(item.title);
       }}
     >
-      <DysText style={styles.title}>{item.title}</DysText>
-      <DysText style={styles.snippet} numberOfLines={2}>
+      <Text style={styles.title}>{item.title}</Text>
+      <Text style={styles.snippet} numberOfLines={2}>
         {item.snippet.replace(/<[^>]*>/g, '')}
-      </DysText>
+      </Text>
     </Pressable>
   );
 
@@ -98,7 +102,7 @@ export const WikipediaSearch = ({ onArticleSelect }: WikipediaSearchProps) => {
         />
       )}
       {isLoading && (
-        <DysText style={styles.loadingText}>Chargement de l'article...</DysText>
+        <Text style={styles.loadingText}>Chargement de l'article...</Text>
       )}
     </View>
   );
@@ -107,6 +111,7 @@ export const WikipediaSearch = ({ onArticleSelect }: WikipediaSearchProps) => {
 const styles = StyleSheet.create({
   searchContainer: {
     marginBottom: 16,
+    margin: 16
   },
   searchInput: {
     borderWidth: 1,
@@ -120,6 +125,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 8,
+    backgroundColor: '#f0f0f0',
   },
   searchResult: {
     padding: 12,
