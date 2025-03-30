@@ -4,47 +4,17 @@ import { useState, useEffect } from 'react';
 import { useAssets } from 'expo-asset';
 import { Image } from "expo-image";
 import BoostedParagraph from '@/components/BoostedParagraph';
-interface WikipediaArticle {
-  title: string;
-  content: Array<string>;
-}
+import useArticle from '@/hooks/useArticle';
+
 
 export default function BoostedArticle() {
   const { title } = useLocalSearchParams<{ title: string }>();
-  const [article, setArticle] = useState<WikipediaArticle | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { article, isLoading } = useArticle(title);
   
   const [assets] = useAssets([
     require('@/assets/images/icon_1.png'),
   ]);
 
-  useEffect(() => {
-    const fetchArticle = async () => {
-      try {
-        const response = await fetch(
-          `https://fr.wikipedia.org/w/api.php?action=query&prop=extracts&titles=${encodeURIComponent(title)}&format=json&origin=*&formatversion=2&explaintext=1`
-        );
-        const data = await response.json();
-        const pages = data.query.pages;
-        const pageId = Object.keys(pages)[0];
-        const articleData = pages[pageId];
-        
-        setArticle({
-          title: articleData.title,
-          content: (articleData.extract as string)
-            .split('\n')
-            .filter((line: string) => line.trim() !== '')
-            .slice(0, 3)
-        });
-      } catch (error) {
-        console.error('Error fetching article:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchArticle();
-  }, [title]);
 
   if (isLoading) {
     return (
