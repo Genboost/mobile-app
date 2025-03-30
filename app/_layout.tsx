@@ -2,15 +2,18 @@ import { Stack } from "expo-router";
 import { HeaderTitle } from "@/components/HeaderTitle";
 import Entypo from '@expo/vector-icons/Entypo';
 import { useState } from 'react';
-import { View } from 'react-native';
+import { View, useWindowDimensions } from 'react-native';
 import { SearchOverlay } from "@/components/SearchOverlay";
 
 export default function RootLayout() {
   const title = "WIKIPEDYS";
   const [isSearchVisible, setIsSearchVisible] = useState(false);
+
+  const { width } = useWindowDimensions();
+  console.log(width);
   
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, width: width > 600 ? 600 : '100%', alignSelf: 'center' }}>
       <Stack screenOptions={{
         title: title,
         headerTitle: () => <HeaderTitle title={title} />,
