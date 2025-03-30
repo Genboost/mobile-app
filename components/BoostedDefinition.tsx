@@ -1,10 +1,12 @@
 import { StyleProp, Text, TextStyle, View, Pressable, Animated, StyleSheet } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import * as Speech from 'expo-speech';
+import { useSound } from '@/contexts/SoundContext';
 
 export default function BoostedDefinition({ children, style, definition }: { children: React.ReactNode, style?: StyleProp<TextStyle>, definition: string }) {
     const [showTooltip, setShowTooltip] = useState(false);
     const fadeAnim = useRef(new Animated.Value(0)).current;
+    const { isSoundEnabled } = useSound();
 
     const handlePress = (event: any) => {
         // Prevent event from propagating to parent elements
@@ -17,12 +19,14 @@ export default function BoostedDefinition({ children, style, definition }: { chi
             useNativeDriver: true,
         }).start();
         
-        // Speak the definition
-        Speech.speak(definition, {
-            language: 'fr',
-            pitch: 1,
-            rate: 0.9,
-        });
+        // Speak the definition only if sound is enabled
+        if (isSoundEnabled) {
+            Speech.speak(definition, {
+                language: 'fr',
+                pitch: 1,
+                rate: 0.9,
+            });
+        }
     };
 
     useEffect(() => {

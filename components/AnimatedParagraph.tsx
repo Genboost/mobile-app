@@ -1,10 +1,11 @@
-import { View, StyleSheet, Text, Animated } from "react-native";
+import { StyleSheet, Text, Animated, ActivityIndicator, View } from "react-native";
 import { useEffect, useRef } from "react";
 
 interface AnimatedParagraphProps {
     children: React.ReactNode;
     isAnimating: boolean;
     style?: any;
+    isLoading?: boolean;
 }
 
 interface AnimatedWordProps {
@@ -107,23 +108,31 @@ export default function AnimatedParagraph({
     };
 
     return (
-        <Text>
-            <Animated.View style={[styles.container, { opacity: opacityValue }]}>
-                {splitByWords.map((word, index) => (
-                    <AnimatedWord
-                        key={index}
-                        word={word}
-                        color={getRandomColor()}
-                        duration={getRandomDuration()}
-                        delay={getRandomDelay()}
-                    />
-                ))}
-            </Animated.View>
-        </Text>
+        <View style={styles.wrapper}>
+            <Text>
+                <Animated.View style={[styles.container, { opacity: opacityValue }]}>
+                    {splitByWords.map((word, index) => (
+                        <AnimatedWord
+                            key={index}
+                            word={word}
+                            color={getRandomColor()}
+                            duration={getRandomDuration()}
+                            delay={getRandomDelay()}
+                        />
+                    ))}
+                </Animated.View>
+            </Text>
+            <View style={styles.loaderContainer}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
+    wrapper: {
+        position: 'relative',
+    },
     container: {
         flex: 1,
         flexDirection: 'row',
@@ -135,5 +144,16 @@ const styles = StyleSheet.create({
         lineHeight: 24,
         borderRadius: 6,
         overflow: 'hidden',
+    },
+    loaderContainer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(255, 255, 255, 0.4)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 6,
     },
 }); 

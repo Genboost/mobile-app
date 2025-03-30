@@ -5,11 +5,13 @@ import { useAssets } from 'expo-asset';
 import { Image } from "expo-image";
 import BoostedParagraph from '@/components/BoostedParagraph';
 import useArticle from '@/hooks/useArticle';
+import { useSound } from '@/contexts/SoundContext';
 
 
 export default function BoostedArticle() {
   const { title } = useLocalSearchParams<{ title: string }>();
   const { article, isLoading } = useArticle(title);
+  const { isSoundEnabled, toggleSound } = useSound();
   
   const [assets] = useAssets([
     require('@/assets/images/icon_1.png'),
@@ -43,9 +45,15 @@ export default function BoostedArticle() {
       </ScrollView>
     
       <View style={styles.bottomBar}>
+        <View style={styles.leftSpace} />
         <Link href={`/article/${title}`} asChild>
             <Image source={assets?.[0]} style={styles.icon}/>
         </Link>
+        <View style={styles.rightSpace}>
+          <Pressable onPress={toggleSound} style={styles.soundButton}>
+            <Text style={styles.soundIcon}>{isSoundEnabled ? '🔊' : '🔈'}</Text>
+          </Pressable>
+        </View>
       </View>
     </View>
   );
@@ -110,15 +118,29 @@ const styles = StyleSheet.create({
   },
   bottomBar: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    alignItems: 'center',
     borderTopWidth: 2,
     borderTopColor: '#ccc',
     backgroundColor: '#eaecf0',
     padding: 2,
     height: 50,
+    paddingHorizontal: 16,
+  },
+  leftSpace: {
+    flex: 1,
+  },
+  rightSpace: {
+    flex: 1,
+    alignItems: 'flex-end',
   },
   icon: {
     width: 35,
     height: 35,
+  },
+  soundButton: {
+    padding: 8,
+  },
+  soundIcon: {
+    fontSize: 24,
   },
 }); 

@@ -1,5 +1,6 @@
 import { Text, TextStyle, StyleProp, StyleSheet, TouchableOpacity } from "react-native";
 import * as Speech from 'expo-speech';
+import { useSound } from '@/contexts/SoundContext';
 
 export const DysText = ({ children, style, numberOfLines }: { children?: React.ReactNode, style?: StyleProp<TextStyle>, numberOfLines?: number }) => {
 	let toSpeak = '';
@@ -8,8 +9,10 @@ export const DysText = ({ children, style, numberOfLines }: { children?: React.R
 	} else {
 		toSpeak = children?.toString() || '';
 	}
+	const { isSoundEnabled } = useSound();
+
 	const handlePress = () => {
-		if (toSpeak) {
+		if (toSpeak && isSoundEnabled) {
 			Speech.speak(toSpeak, {
 				language: 'fr',
 				pitch: 1,

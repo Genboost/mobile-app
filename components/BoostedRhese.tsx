@@ -1,6 +1,7 @@
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import * as Speech from 'expo-speech';
 import { useId } from "react";
+import { useSound } from '@/contexts/SoundContext';
 
 import useHighlighting from "@/hooks/useHighlighting";
 import BoostedDefinition from "@/components/BoostedDefinition";
@@ -14,14 +15,17 @@ export default function BoostedRhese({
 }) {
     const id = useId();
     const { isHighlighted, pickMe } = useHighlighting(id);
+    const { isSoundEnabled } = useSound();
     
     const textWithoutLinks = children?.toString().replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1');
     const handlePress = () => {
-        Speech.speak(textWithoutLinks || '', {
-            language: 'fr',
-            pitch: 1,
-            rate: 1,
-        });
+        if (isSoundEnabled) {
+            Speech.speak(textWithoutLinks || '', {
+                language: 'fr',
+                pitch: 1,
+                rate: 1,
+            });
+        }
         pickMe();
     };
 

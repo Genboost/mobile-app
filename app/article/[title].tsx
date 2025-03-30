@@ -108,11 +108,13 @@ const styles = StyleSheet.create({
   bottomBar: {
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
     borderTopWidth: 2,
     borderTopColor: '#ccc',
     backgroundColor: '#eaecf0',
     padding: 2,
     height: 50,
+    paddingHorizontal: 16,
   },
   icon: {
     width: 35,
