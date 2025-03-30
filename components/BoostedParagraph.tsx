@@ -1,8 +1,9 @@
-import { View, StyleSheet, ActivityIndicator, Text } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { useState, useEffect } from "react";
 import { api } from "@/infrastructure/Api";
 
 import BoostedRhese from "./BoostedRhese";
+import AnimatedParagraph from "./AnimatedParagraph";
 
 export default function BoostedParagraph({ 
   children, 
@@ -32,9 +33,9 @@ export default function BoostedParagraph({
 
     if (isLoading) {
         return (
-            <View style={styles.loadingContainer}>
-                <ActivityIndicator size="small" color="#0000ff" />
-            </View>
+            <AnimatedParagraph isAnimating={true}>
+                {children}
+            </AnimatedParagraph>
         );
     }
 
@@ -60,10 +61,5 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
-    },
-    loadingContainer: {
-        padding: 16,
-        alignItems: 'center',
-        justifyContent: 'center',
     },
 });

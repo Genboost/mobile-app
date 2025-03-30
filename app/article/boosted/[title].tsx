@@ -64,15 +64,15 @@ export default function BoostedArticle() {
 
   return (
     <View style={styles.container}>
-    <ScrollView style={styles.articleContainer}>
-      <Text style={styles.title}>{article.title}</Text>
-      <View style={[styles.separator, {marginBottom: 16}]} />
-      {article.content.map((paragraph, index) => (
-        <WikiParagraph key={index}>{paragraph}</WikiParagraph>
-      ))}
-    </ScrollView>
+      <ScrollView style={styles.articleContainer}>
+        <Text style={styles.title}>{article.title}</Text>
+        <View style={[styles.separator, {marginBottom: 16}]} />
+        {article.content.map((paragraph, index) => (
+          <WikiParagraph key={index}>{paragraph}</WikiParagraph>
+        ))}
+      </ScrollView>
     
-    <View style={styles.bottomBar}>
+      <View style={styles.bottomBar}>
         <Link href={`/article/${title}`} asChild>
             <Image source={assets?.[0]} style={styles.icon}/>
         </Link>

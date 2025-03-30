@@ -10,7 +10,6 @@ export default function RootLayout() {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
 
   const { width } = useWindowDimensions();
-  console.log(width);
   
   return (
     <View style={{ flex: 1, width: width > 600 ? 600 : '100%', alignSelf: 'center' }}>
