@@ -28,13 +28,15 @@ export default function BoostedRhese({
     const boostedDefinitions = splitText(children?.toString() || '');
 
     return (
-        <TouchableOpacity onPress={handlePress}>
-            <Text style={[styles.paragraph, isHighlighted && styles.highlighted]}>
-                {boostedDefinitions.map(({ text, definition }, index) => (
-                    <RheseText key={index} text={text} definition={definition} isHighlighted={isHighlighted} />
-                ))}
-            </Text>
-        </TouchableOpacity>
+        <Text>
+            <TouchableOpacity onPress={handlePress}>
+                <Text style={[styles.paragraph, isHighlighted && styles.highlighted]}>
+                    {boostedDefinitions.map(({ text, definition }, index) => (
+                        <RheseText key={index} text={text} definition={definition} isHighlighted={isHighlighted} />
+                    ))}
+                </Text>
+            </TouchableOpacity>
+        </Text>
     )
 }
 

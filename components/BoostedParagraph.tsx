@@ -1,4 +1,4 @@
-import { View, StyleSheet, ActivityIndicator } from "react-native";
+import { View, StyleSheet, ActivityIndicator, Text } from "react-native";
 import { useState, useEffect } from "react";
 import { api } from "@/infrastructure/Api";
 
@@ -39,21 +39,28 @@ export default function BoostedParagraph({
     }
 
     return (
-        <View>
-            {boostedParagraph.map((rhese, index) => (
-                <BoostedRhese 
-                    key={index} 
-                    isHighlighted={highlightedIndex === index}
-                    onPress={() => handleRhesePress(index)}
-                >
-                    {rhese}
-                </BoostedRhese>
-            ))}
-        </View>
+        <Text>
+            <View style={styles.container}>
+                {boostedParagraph.map((rhese, index) => (
+                    <BoostedRhese 
+                        key={index} 
+                        isHighlighted={highlightedIndex === index}
+                        onPress={() => handleRhesePress(index)}
+                    >
+                        {rhese}
+                    </BoostedRhese>
+                ))}
+            </View>
+        </Text>
     )
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+    },
     loadingContainer: {
         padding: 16,
         alignItems: 'center',
