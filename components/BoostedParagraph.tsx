@@ -1,17 +1,27 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { useState, useEffect } from "react";
 import { api } from "@/infrastructure/Api";
 
 import BoostedRhese from "./BoostedRhese";
 
-export default function BoostedParagraph({ children }: { children: React.ReactNode }) {
+export default function BoostedParagraph({ 
+  children, 
+}: { 
+  children: React.ReactNode;
+}) {
     const [boostedParagraph, setBoostedParagraph] = useState<Array<string>>([]);
     const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchBoostedParagraph = async () => {
-            const boostedParagraph = await api.getBoostedParagraph(children?.toString() ?? "");
-            setBoostedParagraph(boostedParagraph);
+            setIsLoading(true);
+            try {
+                const boostedParagraph = await api.getBoostedParagraph(children?.toString() ?? "");
+                setBoostedParagraph(boostedParagraph);
+            } finally {
+                setIsLoading(false);
+            }
         }
         fetchBoostedParagraph();
     }, [children]);
@@ -19,6 +29,14 @@ export default function BoostedParagraph({ children }: { children: React.ReactNo
     const handleRhesePress = (index: number) => {
         setHighlightedIndex(highlightedIndex === index ? null : index);
     };
+
+    if (isLoading) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="small" color="#0000ff" />
+            </View>
+        );
+    }
 
     return (
         <View>
@@ -34,3 +52,11 @@ export default function BoostedParagraph({ children }: { children: React.ReactNo
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    loadingContainer: {
+        padding: 16,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+});
