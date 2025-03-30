@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
 
-let currentHighlightedId : string | null = null;
 let listToHighlight : ((index: string | null) => void)[] = [];
 
 export default function useHighlighting(myId: string) {
