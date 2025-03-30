@@ -1,14 +1,15 @@
 import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
-import { Link, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, Link } from 'expo-router';
 import { useState, useEffect } from 'react';
 import { useAssets } from 'expo-asset';
 import { Image } from "expo-image";
+import BoostedParagraph from '@/components/BoostedParagraph';
 interface WikipediaArticle {
   title: string;
   content: Array<string>;
 }
 
-export default function Article() {
+export default function BoostedArticle() {
   const { title } = useLocalSearchParams<{ title: string }>();
   const [article, setArticle] = useState<WikipediaArticle | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -72,8 +73,8 @@ export default function Article() {
     </ScrollView>
     
     <View style={styles.bottomBar}>
-        <Link href={`/article/boosted/${title}`} asChild>
-            <Image source={assets?.[0]} style={styles.icon} tintColor="#808080" />
+        <Link href={`/article/${title}`} asChild>
+            <Image source={assets?.[0]} style={styles.icon}/>
         </Link>
       </View>
     </View>
@@ -100,9 +101,7 @@ function WikiParagraph({children}: {children: React.ReactNode}) {
     )
   }
   return (
-    <Text style={styles.paragraph}>
-      {children}
-    </Text>
+    <BoostedParagraph>{children}</BoostedParagraph>
   )
 }
 
@@ -134,8 +133,9 @@ const styles = StyleSheet.create({
     marginVertical: 16,
   },
   paragraph: {
-    fontSize: 16,
-    lineHeight: 24,
+    fontSize: 22,
+    lineHeight: 48,
+    letterSpacing: 2,
     marginBottom: 16,
   },
   bottomBar: {

@@ -8,4 +8,5 @@ export interface NamedEntity {
 export interface Api {
   getRhese: (text: string) => Promise<Array<string>>;
   getNamedEntity: (text: string) => Promise<Array<NamedEntity>>;
+  getBoostedParagraph: (text: string) => Promise<Array<string>>;
 }

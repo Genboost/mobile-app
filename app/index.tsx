@@ -1,23 +1,11 @@
 import { View, StyleSheet, ScrollView, Text, Pressable } from "react-native";
-import { useState } from "react"; 
 import { useFonts } from 'expo-font';
-import { Image } from "expo-image";
-import { useAssets } from "expo-asset";
-
-interface WikipediaArticle {
-  title: string;
-  content: string;
-}
 
 export default function Index() {
   useFonts({
     'LinLibertine': require('../assets/fonts/LinLibertine_R.ttf'),
     'linLibertineBold': require('../assets/fonts/LinLibertine_RB.ttf'),
   });
-  const [assets] = useAssets([
-    require('../assets/images/icon_1.png'),
-  ]);
-  const [dysplay, setDysplay] = useState<boolean>(false);
 
   return (
     <View style={styles.container}>
@@ -44,12 +32,6 @@ export default function Index() {
           </View>
         </View>
       </ScrollView>
-      
-      <View style={styles.bottomBar}>
-        <Pressable onPress={() => setDysplay(!dysplay)}>
-          <Image source={assets?.[0]} style={styles.icon} />
-        </Pressable>
-      </View>
     </View>
   );
 }
@@ -126,17 +108,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 8,
     color: '#333333',
-  },
-  bottomBar: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    borderTopWidth: 2,
-    borderTopColor: '#ccc',
-    backgroundColor: '#eaecf0',
-    padding: 8,
-  },
-  icon: {
-    width: 60,
-    height: 60,
   },
 });

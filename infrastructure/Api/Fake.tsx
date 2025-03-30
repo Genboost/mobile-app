@@ -27,4 +27,5 @@ const fakeNamedEntity = [{
 export const fakeApi: Api = {
   getRhese: (text: string) => Promise.resolve(fakeRhese),
   getNamedEntity: (text: string) => Promise.resolve(fakeNamedEntity),
+  getBoostedParagraph: (text: string) => Promise.resolve(fakeRhese),
 };

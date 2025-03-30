@@ -18,4 +18,11 @@ export const Python: Api = {
         },
         body: JSON.stringify({ text }),
     }).then(res => res.json()),
+    getBoostedParagraph: (text: string) => fetch(`${url}/api/get_rhese_and_explained`, {
+        method: 'POST',
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({ text }),
+    }).then(res => res.json()),
   };
