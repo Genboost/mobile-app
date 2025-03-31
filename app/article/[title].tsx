@@ -1,8 +1,10 @@
-import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Link, useLocalSearchParams } from 'expo-router';
 import { useAssets } from 'expo-asset';
 import { Image } from "expo-image";
 import useArticle from '@/hooks/useArticle';
+import BottomBar from '@/components/BottomBar';
 
 export default function Article() {
   const { title } = useLocalSearchParams<{ title: string }>();
@@ -30,19 +32,23 @@ export default function Article() {
 
   return (
     <View style={styles.container}>
-    <ScrollView style={styles.articleContainer}>
-      <Text style={styles.title}>{article.title}</Text>
-      <View style={[styles.separator, {marginBottom: 16}]} />
-      {article.content.map((paragraph, index) => (
-        <WikiParagraph key={index}>{paragraph}</WikiParagraph>
-      ))}
-    </ScrollView>
+      <ScrollView style={styles.articleContainer}>
+        <Text style={styles.title}>{article.title}</Text>
+        <View style={[styles.separator, {marginBottom: 16}]} />
+        {article.content.map((paragraph, index) => (
+          <WikiParagraph key={index}>{paragraph}</WikiParagraph>
+        ))}
+      </ScrollView>
     
-    <View style={styles.bottomBar}>
-        <Link href={`/article/boosted/${title}`} asChild>
+      <BottomBar
+        left={<View />}
+        center={
+          <Link href={`/article/boosted/${title}`} asChild>
             <Image source={assets?.[0]} style={styles.icon} tintColor="#808080" />
-        </Link>
-      </View>
+          </Link>
+        }
+        right={<View />}
+      />
     </View>
   );
 }
@@ -104,17 +110,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     marginBottom: 16,
-  },
-  bottomBar: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderTopWidth: 2,
-    borderTopColor: '#ccc',
-    backgroundColor: '#eaecf0',
-    padding: 2,
-    height: 50,
-    paddingHorizontal: 16,
   },
   icon: {
     width: 35,

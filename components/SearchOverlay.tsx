@@ -10,21 +10,19 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import Entypo from '@expo/vector-icons/Entypo';
-
-interface SearchOverlayProps {
-  onClose: () => void;
-}
+import { useSearch } from '@/contexts/SearchContext';
 
 interface SearchResult {
   title: string;
   snippet: string;
 }
 
-export function SearchOverlay({ onClose }: SearchOverlayProps) {
+export function SearchOverlay() {
   const [searchQuery, setSearchQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { setIsSearchVisible } = useSearch();
 
   const handleSearch = async (query: string) => {
     if (!query.trim()) {
@@ -60,7 +58,7 @@ export function SearchOverlay({ onClose }: SearchOverlayProps) {
       pathname: '/article/[title]',
       params: { title }
     });
-    onClose();
+    setIsSearchVisible(false);
   };
 
   return (
@@ -81,7 +79,7 @@ export function SearchOverlay({ onClose }: SearchOverlayProps) {
           />
         </View>
         
-        <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+        <TouchableOpacity onPress={() => setIsSearchVisible(false)} style={styles.closeButton}>
           <Entypo name="cross" size={24} color="#54595d" />
         </TouchableOpacity>
       </View>

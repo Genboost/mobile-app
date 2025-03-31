@@ -1,9 +1,11 @@
+import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { useLocalSearchParams, Link } from 'expo-router';
 import { useState, useEffect } from 'react';
 import { useAssets } from 'expo-asset';
 import { Image } from "expo-image";
 import BoostedParagraph from '@/components/BoostedParagraph';
+import BottomBar from '@/components/BottomBar';
 import useArticle from '@/hooks/useArticle';
 import { useSound } from '@/contexts/SoundContext';
 
@@ -44,17 +46,19 @@ export default function BoostedArticle() {
         ))}
       </ScrollView>
     
-      <View style={styles.bottomBar}>
-        <View style={styles.leftSpace} />
-        <Link href={`/article/${title}`} asChild>
+      <BottomBar
+        left={<View />}
+        center={
+          <Link href={`/article/${title}`} asChild>
             <Image source={assets?.[0]} style={styles.icon}/>
-        </Link>
-        <View style={styles.rightSpace}>
+          </Link>
+        }
+        right={
           <Pressable onPress={toggleSound} style={styles.soundButton}>
             <Text style={styles.soundIcon}>{isSoundEnabled ? '🔊' : '🔈'}</Text>
           </Pressable>
-        </View>
-      </View>
+        }
+      />
     </View>
   );
 }
@@ -115,23 +119,6 @@ const styles = StyleSheet.create({
     lineHeight: 48,
     letterSpacing: 2,
     marginBottom: 16,
-  },
-  bottomBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderTopWidth: 2,
-    borderTopColor: '#ccc',
-    backgroundColor: '#eaecf0',
-    padding: 2,
-    height: 50,
-    paddingHorizontal: 16,
-  },
-  leftSpace: {
-    flex: 1,
-  },
-  rightSpace: {
-    flex: 1,
-    alignItems: 'flex-end',
   },
   icon: {
     width: 35,
